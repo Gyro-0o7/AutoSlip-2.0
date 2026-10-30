@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 16px; font-family: sans-serif; color: #222; font-size: 14px; }
+    .who { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+    label { display: block; margin: 10px 0 3px; color: #555; }
+    input[type=text], input[type=number] { width: 100%; padding: 8px; font-size: 15px; border: 1px solid #ccc; border-radius: 6px; }
+    #form { display: none; }
+    .bank { color: #555; margin-top: 10px; }
+    .msg { margin-top: 12px; min-height: 20px; }
+    .err { color: #c62828; }
+    .ok { color: #2e7d32; font-weight: 700; }
+
+    .summary { margin-top: 14px; padding: 12px; border-radius: 8px; background: #f0f3f7; line-height: 1.7; }
+    .summary b { display: inline-block; min-width: 110px; font-weight: 600; color: #555; }
+    .good { color: #2e7d32; font-weight: 700; }
+    .warn { color: #c62828; font-weight: 700; }
+    .mid  { color: #ef6c00; font-weight: 700; }
+
+    .actions { display: flex; gap: 8px; margin-top: 14px; }
+    button { flex: 1; padding: 10px; border: none; border-radius: 6px; font-size: 15px; color: #fff; cursor: pointer; }
+    #save { background: #2e7d32; }
+    #cancel { background: #9e9e9e; }
+    button:disabled { opacity: .5; cursor: default; }
+  </style>
+</head>
+<body>
+  <div class="who"><?= name ?></div>
+
+  <label for="file">เลือกสลิป (.jpg หรือ .png ไม่เกิน 5MB)</label>
+  <input type="file" id="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" onchange="readFile()">
+
+  <div class="msg" id="msg"></div>
+
+  <div id="form">
+    <div class="bank" id="bank"></div>
+
+    <label for="sender">ชื่อ-สกุลผู้โอน (ตามสลิป)</label>
+    <input type="text" id="sender" oninput="queuePreview()">
+    <label for="amount">ยอดโอน (บาท)</label>
+    <input type="number" id="amount" min="1" step="0.01" oninput="queuePreview()">
+    <label for="datetime">วันเวลาที่โอน (YYYY-MM-DD HH:mm)</label>
+    <input type="text" id="datetime">
+    <label for="ref">เลขอ้างอิง</label>
+    <input type="text" id="ref">
+
+    <div class="summary" id="summary"></div>
+
+    <div class="actions">
+      <button id="cancel" onclick="google.script.host.close()">ยกเลิก</button>
+      <button id="save" onclick="save()">ยืนยันและบันทึก</button>
+    </div>
+  </div>
+
+  <script>
+    const ROW = Number('<?= row ?>');
+    let B64 = '', FILE = null, timer = null;
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    function say(text, cls) { $('msg').className = 'msg ' + (cls || ''); $('msg').textContent = text; }
+
+    function readFile() {
+      FILE = $('file').files[0];
+      $('form').style.display = 'none';
+      if (!FILE) return;
+      if (!['image/jpeg', 'image/png'].includes(FILE.type)) { say('รองรับเฉพาะไฟล์ .jpg และ .png', 'err'); return; }
+      if (FILE.size > 5 * 1024 * 1024) { say('ไฟล์ใหญ่เกิน 5MB', 'err'); return; }
+
+      say('กำลังให้ AI อ่านสลิป...');
+      const reader = new FileReader();
+      reader.onload = () => {
+        B64 = reader.result.split(',')[1];
+        google.script.run
+          .withSuccessHandler(showResult)
+          .withFailureHandler(e => say(e.message, 'err'))
+          .readSlip(B64, FILE.type);
+      };
+      reader.onerror = () => say('อ่านไฟล์ไม่สำเร็จ ลองเลือกใหม่', 'err');
+      reader.readAsDataURL(FILE);
+    }
+
+    function showResult(r) {
+      if (!r.isSlip) { say('ไฟล์นี้ดูไม่ใช่สลิปโอนเงิน กรุณาเลือกไฟล์ใหม่', 'err'); return; }
+      $('bank').textContent = r.bank ? 'ธนาคาร: ' + r.bank : '';
+      $('sender').value = r.sender ?? '';
+      $('amount').value = r.amount ?? '';
+      $('datetime').value = r.datetime ?? '';
+      $('ref').value = r.ref ?? '';
+      $('form').style.display = 'block';
+      say('ตรวจข้อมูลให้ตรงกับสลิป แล้วกดยืนยัน');
+      preview();
+    }
+
+    // สรุปการตรวจสลิป: ชื่อ-สกุล และจ่าย/ไม่จ่าย
+    function queuePreview() { clearTimeout(timer); timer = setTimeout(preview, 400); }
+
+    function preview() {
+      google.script.run
+        .withSuccessHandler(p => {
+          const sender = $('sender').value.trim();
+          const matchHtml =
+            p.match === 'ตรง' ? '<span class="good">✓ ตรงกับชื่อนักเรียน</span>' :
+            p.match === 'ไม่ตรง' ? '<span class="warn">⚠ ไม่ตรงกับชื่อนักเรียน (อาจโอนแทนกัน)</span>' :
+            '<span class="mid">เทียบชื่อไม่ได้</span>';
+          const cls = p.status === 'จ่ายครบ' ? 'good' : p.status === 'จ่ายบางส่วน' ? 'mid' : 'warn';
+          $('summary').innerHTML =
+            `<div><b>นักเรียน</b>${esc(p.studentName)}</div>` +
+            `<div><b>ชื่อ-สกุลผู้โอน</b>${esc(sender || '-')}</div>` +
+            `<div><b>ตรวจชื่อ</b>${matchHtml}</div>` +
+            `<div><b>สถานะ</b><span class="${cls}">${esc(p.label)}</span></div>`;
+        })
+        .withFailureHandler(e => say(e.message, 'err'))
+        .previewSlip(ROW, Number($('amount').value) || 0, $('sender').value.trim());
+    }
+
+    function save() {
+      const data = {
+        sender: $('sender').value.trim(),
+        amount: Number($('amount').value),
+        datetime: $('datetime').value.trim(),
+        ref: $('ref').value.trim()
+      };
+      if (!(data.amount > 0)) { say('กรุณากรอกยอดโอน', 'err'); return; }
+
+      $('save').disabled = true;
+      say('กำลังบันทึก...');
+      google.script.run
+        .withSuccessHandler(text => {
+          say('บันทึกแล้ว: ' + text, 'ok');
+          setTimeout(() => google.script.host.close(), 1800);
+        })
+        .withFailureHandler(e => { say(e.message, 'err'); $('save').disabled = false; })
+        .saveSlip(ROW, data, B64, FILE.name, FILE.type);
+    }
+  </script>
+</body>
+</html>

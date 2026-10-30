@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบเก็บเงินห้อง E33</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Prompt', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    
+    /* High Definition Static Liquid Glass Styles */
+    .liquid-mesh {
+      background-color: #f1f5f9;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(186, 230, 253, 0.55) 0px, transparent 55%),
+        radial-gradient(at 100% 0%, rgba(221, 214, 254, 0.5) 0px, transparent 55%),
+        radial-gradient(at 50% 100%, rgba(187, 247, 208, 0.4) 0px, transparent 55%);
+    }
+
+    .liquid-glass-static {
+      background: rgba(255, 255, 255, 0.84);
+      backdrop-filter: blur(24px) saturate(190%);
+      -webkit-backdrop-filter: blur(24px) saturate(190%);
+      border: 1.5px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 
+        0 16px 36px -10px rgba(15, 23, 42, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.9) inset,
+        0 2px 4px 0 rgba(255, 255, 255, 1) inset;
+    }
+
+    .liquid-card-static {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.75) 100%);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1.5px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 
+        0 12px 28px -6px rgba(15, 23, 42, 0.06),
+        0 0 0 1px rgba(255, 255, 255, 0.85) inset,
+        0 1.5px 3px 0 rgba(255, 255, 255, 1) inset;
+    }
+
+    .liquid-card-emerald-static {
+      background: linear-gradient(135deg, rgba(236, 253, 243, 0.94) 0%, rgba(209, 250, 229, 0.78) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1.5px solid rgba(167, 243, 208, 0.95);
+      box-shadow: 
+        0 12px 28px -6px rgba(5, 150, 105, 0.08),
+        0 1.5px 3px 0 rgba(255, 255, 255, 1) inset;
+    }
+
+    .liquid-card-amber-static {
+      background: linear-gradient(135deg, rgba(254, 252, 232, 0.94) 0%, rgba(254, 240, 138, 0.78) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1.5px solid rgba(253, 224, 71, 0.95);
+      box-shadow: 
+        0 12px 28px -6px rgba(217, 119, 6, 0.08),
+        0 1.5px 3px 0 rgba(255, 255, 255, 1) inset;
+    }
+
+    .liquid-card-rose-static {
+      background: linear-gradient(135deg, rgba(255, 241, 242, 0.94) 0%, rgba(254, 205, 211, 0.78) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1.5px solid rgba(253, 164, 175, 0.95);
+      box-shadow: 
+        0 12px 28px -6px rgba(225, 29, 72, 0.08),
+        0 1.5px 3px 0 rgba(255, 255, 255, 1) inset;
+    }
+
+    .liquid-btn-dark {
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.16), 0 1px 1px rgba(255, 255, 255, 0.25) inset;
+    }
+
+    .liquid-btn-glass {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04), 0 1px 0 rgba(255, 255, 255, 0.95) inset;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(241, 245, 249, 0.5); }
+    ::-webkit-scrollbar-thumb { background: rgba(203, 213, 225, 0.85); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 1); }
+  </style>
+</head>
+<body class="liquid-mesh min-h-screen p-4 sm:p-5 text-slate-800 antialiased relative">
+  <div class="max-w-[1360px] mx-auto space-y-4">
+    
+    <!-- Top Header Banner (Static Liquid Glass) -->
+    <div class="liquid-glass-static rounded-3xl p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-2xl liquid-btn-dark flex items-center justify-center font-bold text-xl shadow-md shrink-0">
+          ฿
+        </div>
+        <div>
+          <h1 class="text-xl font-bold text-slate-900 tracking-tight">ระบบติดตามการชำระเงินห้องเรียน</h1>
+          <p class="text-xs text-slate-500 mt-0.5">
+            ค่าหนังสือ & เงินห้องเรียน · ซิงก์ข้อมูลอัตโนมัติจาก Google Sheets
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Progress Bar (Without top upload button) -->
+      <div class="bg-white/70 backdrop-blur-md rounded-2xl p-3.5 border border-white/90 min-w-[280px] shadow-sm">
+        <div class="flex justify-between items-center text-xs mb-1.5 font-medium">
+          <span class="text-slate-600">ความคืบหน้ารวมทั้งห้อง</span>
+          <span class="font-bold text-blue-600" id="progressPercent">0%</span>
+        </div>
+        <div class="w-full bg-slate-200/80 rounded-full h-2.5 overflow-hidden">
+          <div id="progressBar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+        </div>
+        <div class="flex justify-between items-center text-[10px] text-slate-500 mt-1.5">
+          <span id="progressCollected" class="font-semibold text-slate-700">เก็บได้ 0 ฿</span>
+          <span id="progressTarget">เป้าหมาย 0 ฿</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 Summary Metric Cards (Static Liquid Glass Cards) -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+      <!-- 1. All Students -->
+      <div class="liquid-card-static rounded-2xl p-4">
+        <div class="flex items-center justify-between text-slate-500 text-xs font-medium">
+          <span>นักเรียนในห้อง</span>
+          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        </div>
+        <div class="mt-2.5 flex items-baseline gap-1">
+          <span id="cardTotalStudents" class="text-2xl font-bold tracking-tight text-slate-800">0</span>
+          <span class="text-xs text-slate-500">คน</span>
+        </div>
+        <div id="cardPerStudent" class="mt-1 text-[11px] text-slate-500 truncate">ค่าหนังสือ - ฿/คน</div>
+      </div>
+
+      <!-- 2. Paid Full -->
+      <div class="liquid-card-emerald-static rounded-2xl p-4">
+        <div class="flex items-center justify-between text-emerald-800 text-xs font-semibold">
+          <span>จ่ายครบแล้ว</span>
+          <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <div class="mt-2.5 flex items-baseline gap-1">
+          <span id="cardFullCount" class="text-2xl font-bold tracking-tight text-emerald-700">0</span>
+          <span class="text-xs text-emerald-600 font-semibold">คน</span>
+        </div>
+        <div id="cardFullPercent" class="mt-1 text-[11px] text-emerald-600 font-semibold">0% ของห้อง</div>
+      </div>
+
+      <!-- 3. Partial -->
+      <div class="liquid-card-amber-static rounded-2xl p-4">
+        <div class="flex items-center justify-between text-amber-800 text-xs font-semibold">
+          <span>จ่ายบางส่วน</span>
+          <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <div class="mt-2.5 flex items-baseline gap-1">
+          <span id="cardPartialCount" class="text-2xl font-bold tracking-tight text-amber-700">0</span>
+          <span class="text-xs text-amber-600 font-semibold">คน</span>
+        </div>
+        <div id="cardPartialCount" class="hidden"></div>
+        <div class="mt-1 text-[11px] text-amber-700 font-semibold">โอนแล้วบางวิชา</div>
+      </div>
+
+      <!-- 4. Unpaid -->
+      <div class="liquid-card-rose-static rounded-2xl p-4">
+        <div class="flex items-center justify-between text-rose-800 text-xs font-semibold">
+          <span>ยังไม่จ่าย</span>
+          <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        </div>
+        <div class="mt-2.5 flex items-baseline gap-1">
+          <span id="cardUnpaidCount" class="text-2xl font-bold tracking-tight text-rose-700">0</span>
+          <span class="text-xs text-rose-600 font-semibold">คน</span>
+        </div>
+        <div class="mt-1 text-[11px] text-rose-600 font-semibold">ยังไม่ได้ส่งสลิป</div>
+      </div>
+
+      <!-- 5. Total Collected -->
+      <div class="liquid-card-static rounded-2xl p-4">
+        <div class="flex items-center justify-between text-slate-500 text-xs font-medium">
+          <span>ยอดรับเงินแล้ว</span>
+          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        </div>
+        <div class="mt-2.5 flex items-baseline gap-1">
+          <span id="cardCollected" class="text-2xl font-bold tracking-tight text-slate-900">0</span>
+          <span class="text-xs text-slate-500">฿</span>
+        </div>
+        <div class="mt-1 text-[11px] text-emerald-600 font-semibold">เข้าบัญชีแล้ว</div>
+      </div>
+
+      <!-- 6. Total Owed -->
+      <div class="liquid-card-static rounded-2xl p-4">
+        <div class="flex items-center justify-between text-slate-500 text-xs font-medium">
+          <span>ยอดค้างชำระรวม</span>
+          <svg class="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <div class="mt-2.5 flex items-baseline gap-1">
+          <span id="cardOwed" class="text-2xl font-bold tracking-tight text-rose-600">0</span>
+          <span class="text-xs text-rose-500">฿</span>
+        </div>
+        <div class="mt-1 text-[11px] text-rose-500 font-semibold">ต้องตามเก็บเพิ่ม</div>
+      </div>
+    </div>
+
+    <!-- Main Table Container (Static Liquid Glass) -->
+    <div class="liquid-glass-static rounded-3xl overflow-hidden">
+      
+      <!-- Toolbar -->
+      <div class="p-4 sm:p-5 border-b border-white/70 bg-white/50 backdrop-blur-md flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+        <!-- Search Input -->
+        <div class="relative flex-1 min-w-[240px]">
+          <svg class="w-4 h-4 absolute left-3.5 top-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input
+            type="search"
+            id="searchInput"
+            oninput="filterData()"
+            placeholder="ค้นหาชื่อ, นามสกุล, ชื่อเล่น, เลขที่ หรือเลขประจำตัว..."
+            class="w-full pl-10 pr-3 py-2 text-xs sm:text-sm bg-white/90 backdrop-blur-md border border-white/90 rounded-2xl placeholder-slate-400 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 shadow-2xs"
+          >
+        </div>
+
+        <!-- Filter Buttons & View Modes -->
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Status Filters -->
+          <div class="flex items-center p-1 bg-slate-200/50 backdrop-blur-md rounded-2xl text-xs font-semibold border border-white/70">
+            <button onclick="setFilter('all', this)" class="px-3.5 py-1.5 rounded-xl transition-all bg-white text-slate-900 shadow-sm cursor-pointer">
+              ทั้งหมด (<span id="countAll">0</span>)
+            </button>
+            <button onclick="setFilter('จ่ายครบ', this)" class="px-3.5 py-1.5 rounded-xl transition-all text-slate-600 hover:text-emerald-700 cursor-pointer">
+              จ่ายครบ
+            </button>
+            <button onclick="setFilter('จ่ายบางส่วน', this)" class="px-3.5 py-1.5 rounded-xl transition-all text-slate-600 hover:text-amber-700 cursor-pointer">
+              จ่ายบางส่วน
+            </button>
+            <button onclick="setFilter('ยังไม่จ่าย', this)" class="px-3.5 py-1.5 rounded-xl transition-all text-slate-600 hover:text-rose-700 cursor-pointer">
+              ยังไม่จ่าย
+            </button>
+          </div>
+
+          <!-- View Mode Toggle -->
+          <div class="flex items-center p-1 bg-slate-200/50 backdrop-blur-md rounded-2xl text-xs border border-white/70">
+            <button onclick="setViewMode('cards')" id="btnViewCards" title="มุมมองรายการสรุป" class="p-2 rounded-xl bg-white text-slate-900 shadow-sm transition-all cursor-pointer">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            </button>
+            <button onclick="setViewMode('matrix')" id="btnViewMatrix" title="มุมมองตารางรายวิชา" class="p-2 rounded-xl text-slate-500 hover:text-slate-900 transition-all cursor-pointer">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </button>
+          </div>
+
+          <!-- Refresh Button -->
+          <button onclick="refreshData()" title="รีเฟรชข้อมูลจากชีต" class="liquid-btn-glass inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-700 cursor-pointer">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            <span>รีเฟรช</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- VIEW 1: Cards / Detailed List View -->
+      <div id="cardsView" class="overflow-x-auto">
+        <table class="w-full text-left text-xs sm:text-sm border-collapse min-w-[980px]">
+          <thead>
+            <tr class="bg-white/50 border-b border-white/70 text-slate-700 font-bold text-xs uppercase tracking-wider">
+              <th class="py-3.5 px-3 w-14 text-center">เลขที่</th>
+              <th class="py-3.5 px-3 w-36">เลขประจำตัว</th>
+              <th class="py-3.5 px-4 w-52">ชื่อ - สกุล (ชื่อเล่น)</th>
+              <th class="py-3.5 px-3 text-right w-28">ยอดโอนแล้ว</th>
+              <th class="py-3.5 px-3 text-right w-24">ค้างชำระ</th>
+              <th class="py-3.5 px-4">สถานะการตัดวิชา (จ่ายถึงไหน / ขาดวิชาไหน)</th>
+              <th class="py-3.5 px-3 w-44 text-center">จัดการสลิป</th>
+            </tr>
+          </thead>
+          <tbody id="cardsTableBody" class="divide-y divide-white/60 font-normal text-slate-700">
+            <tr><td colspan="7" class="py-12 text-center text-slate-400">กำลังโหลดข้อมูล...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- VIEW 2: Matrix View (ตารางรายวิชา) -->
+      <div id="matrixView" class="hidden overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse min-w-[1000px]">
+          <thead>
+            <tr id="matrixHeaderRow" class="bg-white/50 border-b border-white/70 text-slate-700 font-bold text-xs">
+              <th class="py-3.5 px-3 w-12 text-center">เลขที่</th>
+              <th class="py-3.5 px-4 w-44">ชื่อ - นามสกุล</th>
+              <th class="py-3.5 px-3 text-right w-24 bg-white/40 font-bold">ยอดโอน</th>
+              <th class="py-3.5 px-3 text-right w-24 bg-white/40 font-bold">ค้างชำระ</th>
+            </tr>
+          </thead>
+          <tbody id="matrixTableBody" class="divide-y divide-white/60 font-normal text-slate-700">
+            <tr><td colspan="10" class="py-12 text-center text-slate-400">กำลังโหลดข้อมูล...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Footer Info -->
+      <div class="p-3.5 bg-white/50 border-t border-white/70 text-xs text-slate-500 flex justify-between items-center">
+        <span id="footerCount">แสดง 0 คน</span>
+        <span>ระบบจะตัดวิชาตามลำดับราคาหนังสืออัตโนมัติ</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LIQUID GLASS UPLOAD MODAL -->
+  <div id="uploadModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md hidden transition-opacity">
+    <div class="liquid-glass-static rounded-3xl w-full max-w-lg p-5 sm:p-6 shadow-2xl border border-white/95 relative max-h-[90vh] overflow-y-auto">
+      
+      <!-- Close Button -->
+      <button onclick="closeUploadModal()" class="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200/50 transition-colors cursor-pointer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-2xl liquid-btn-dark flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+        </div>
+        <div>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900">อัปโหลดสลิปและสแกนด้วย AI</h2>
+          <p class="text-xs text-slate-500">รองรับสลิปธนาคารไทยทุกสถาบัน (.jpg, .png)</p>
+        </div>
+      </div>
+
+      <!-- Select Student -->
+      <div class="mb-4">
+        <label class="block text-xs font-semibold text-slate-700 mb-1.5">เลือกนักเรียนในห้อง</label>
+        <select id="modalStudentSelect" class="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-white/90 backdrop-blur-md border border-slate-300 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400" onchange="onModalStudentChange()">
+          <option value="">-- กรุณาเลือกนักเรียน --</option>
+        </select>
+      </div>
+
+      <!-- Upload Dropzone -->
+      <div class="mb-4">
+        <input type="file" id="slipFileInput" accept="image/jpeg,image/png" class="hidden" onchange="handleFileSelect(event)">
+        
+        <div id="dropzone" onclick="document.getElementById('slipFileInput').click()" class="border-2 border-dashed border-blue-300/80 hover:border-blue-500 bg-blue-50/40 rounded-2xl p-6 text-center cursor-pointer transition-all hover:bg-blue-50/60">
+          <div id="dropzoneContent">
+            <svg class="w-10 h-10 mx-auto text-blue-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+            <p class="text-xs sm:text-sm font-semibold text-slate-700">คลิกเพื่อเลือกรูปสลิป หรือลากไฟล์มาวางที่นี่</p>
+            <p class="text-[11px] text-slate-400 mt-1">ไฟล์ .jpg หรือ .png เท่านั้น</p>
+          </div>
+          <div id="previewContainer" class="hidden">
+            <img id="imagePreview" src="" class="max-h-56 mx-auto rounded-xl shadow-md border border-white/80 object-contain">
+            <p class="text-xs text-blue-600 font-semibold mt-2 hover:underline">คลิกเพื่อเปลี่ยนรูปสลิป</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scan Progress / Status -->
+      <div id="scanStatus" class="hidden p-3 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-700 flex items-center gap-2 mb-4">
+        <svg class="w-4 h-4 animate-spin text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+        <span id="scanStatusText">กำลังส่งภาพให้ AI สแกนข้อมูลสลิป...</span>
+      </div>
+
+      <!-- Extracted Slip Info Form -->
+      <div id="extractedSection" class="hidden space-y-3 bg-white/80 backdrop-blur-md rounded-2xl p-3.5 border border-white/95 mb-4 shadow-sm">
+        <div class="text-xs font-bold text-slate-800 flex items-center justify-between">
+          <span>ข้อมูลที่อ่านได้จากสลิป</span>
+          <span id="nameMatchBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold"></span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div>
+            <label class="text-[11px] text-slate-500 font-medium">ยอดเงิน (บาท)</label>
+            <input type="number" id="inputAmount" class="w-full mt-0.5 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg font-bold text-slate-900" oninput="updateAllocationPreview()">
+          </div>
+          <div>
+            <label class="text-[11px] text-slate-500 font-medium">ชื่อผู้โอนตามสลิป</label>
+            <input type="text" id="inputSender" class="w-full mt-0.5 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-800">
+          </div>
+          <div>
+            <label class="text-[11px] text-slate-500 font-medium">วันเวลาที่โอน</label>
+            <input type="text" id="inputDatetime" class="w-full mt-0.5 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-800">
+          </div>
+          <div>
+            <label class="text-[11px] text-slate-500 font-medium">เลขอ้างอิงสลิป</label>
+            <input type="text" id="inputRef" class="w-full mt-0.5 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-800">
+          </div>
+        </div>
+
+        <!-- Allocation Preview -->
+        <div id="modalAllocPreview" class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 text-[11px]">
+          <span class="font-semibold text-slate-700">การตัดยอดวิชา:</span> <span id="modalAllocText" class="text-slate-600">-</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-2">
+        <button onclick="closeUploadModal()" class="flex-1 py-2.5 rounded-xl text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer">
+          ยกเลิก
+        </button>
+        <button id="btnSaveSlip" onclick="submitSlip()" disabled class="flex-1 py-2.5 rounded-xl text-xs font-semibold liquid-btn-dark cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+          บันทึกสลิปและข้อมูล
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let allStudents = [];
+    let classroomSubjects = [];
+    let totalPerStudent = 0;
+    let currentFilter = 'all';
+    let currentViewMode = 'cards';
+
+    let currentBase64 = '';
+    let currentMimeType = '';
+    let currentFileName = '';
+
+    window.onload = function() {
+      try {
+        const raw = <?!= initialData ?>;
+        if (raw) {
+          applyData(raw);
+        } else {
+          refreshData();
+        }
+      } catch (e) {
+        console.error('Initial data load error:', e);
+        refreshData();
+      }
+    };
+
+    function applyData(data) {
+      allStudents = data.students || [];
+      classroomSubjects = data.subjects || [];
+      totalPerStudent = data.totalPerStudent || 0;
+
+      updateSummaryCards();
+      renderMatrixHeaders();
+      populateModalStudentDropdown();
+      filterData();
+    }
+
+    function refreshData() {
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run
+          .withSuccessHandler(function(res) {
+            applyData(res);
+          })
+          .withFailureHandler(function(err) {
+            console.error('Refresh error:', err);
+          })
+          .getDashboardData();
+      }
+    }
+
+    function updateSummaryCards() {
+      const totalStudents = allStudents.length;
+      const fullCount = allStudents.filter(s => s.status === 'จ่ายครบ').length;
+      const partialCount = allStudents.filter(s => s.status === 'จ่ายบางส่วน').length;
+      const unpaidCount = allStudents.filter(s => s.status === 'ยังไม่จ่าย').length;
+
+      const totalTarget = totalPerStudent * totalStudents;
+      const totalCollected = allStudents.reduce((sum, s) => sum + (Number(s.paid) || 0), 0);
+      const totalOwed = Math.max(0, totalTarget - totalCollected);
+      const percent = totalTarget > 0 ? Math.round((totalCollected / totalTarget) * 100) : 0;
+
+      document.getElementById('cardTotalStudents').innerText = totalStudents;
+      document.getElementById('cardPerStudent').innerText = 'ค่าหนังสือ ' + totalPerStudent.toLocaleString() + ' ฿/คน';
+      document.getElementById('cardFullCount').innerText = fullCount;
+      document.getElementById('cardFullPercent').innerText = (totalStudents > 0 ? Math.round((fullCount / totalStudents) * 100) : 0) + '% ของห้อง';
+      document.getElementById('cardPartialCount').innerText = partialCount;
+      document.getElementById('cardUnpaidCount').innerText = unpaidCount;
+      document.getElementById('cardCollected').innerText = totalCollected.toLocaleString();
+      document.getElementById('cardOwed').innerText = totalOwed.toLocaleString();
+
+      document.getElementById('countAll').innerText = totalStudents;
+      document.getElementById('progressPercent').innerText = percent + '%';
+      document.getElementById('progressBar').style.width = percent + '%';
+      document.getElementById('progressCollected').innerText = 'เก็บได้ ' + totalCollected.toLocaleString() + ' ฿';
+      document.getElementById('progressTarget').innerText = 'เป้าหมาย ' + totalTarget.toLocaleString() + ' ฿';
+    }
+
+    function setFilter(status, btn) {
+      currentFilter = status;
+      document.querySelectorAll('.flex.items-center.p-1 button').forEach(b => {
+        b.className = 'px-3.5 py-1.5 rounded-xl transition-all text-slate-600 hover:text-slate-900 cursor-pointer';
+      });
+      if (status === 'all') {
+        btn.className = 'px-3.5 py-1.5 rounded-xl transition-all bg-white text-slate-900 shadow-sm font-semibold cursor-pointer';
+      } else if (status === 'จ่ายครบ') {
+        btn.className = 'px-3.5 py-1.5 rounded-xl transition-all bg-emerald-600 text-white shadow-sm font-semibold cursor-pointer';
+      } else if (status === 'จ่ายบางส่วน') {
+        btn.className = 'px-3.5 py-1.5 rounded-xl transition-all bg-amber-600 text-white shadow-sm font-semibold cursor-pointer';
+      } else {
+        btn.className = 'px-3.5 py-1.5 rounded-xl transition-all bg-rose-600 text-white shadow-sm font-semibold cursor-pointer';
+      }
+      filterData();
+    }
+
+    function setViewMode(mode) {
+      currentViewMode = mode;
+      const btnCards = document.getElementById('btnViewCards');
+      const btnMatrix = document.getElementById('btnViewMatrix');
+      const cardsView = document.getElementById('cardsView');
+      const matrixView = document.getElementById('matrixView');
+
+      if (mode === 'cards') {
+        btnCards.className = 'p-2 rounded-xl bg-white text-slate-900 shadow-sm transition-all cursor-pointer';
+        btnMatrix.className = 'p-2 rounded-xl text-slate-500 hover:text-slate-900 transition-all cursor-pointer';
+        cardsView.classList.remove('hidden');
+        matrixView.classList.add('hidden');
+      } else {
+        btnMatrix.className = 'p-2 rounded-xl bg-white text-slate-900 shadow-sm transition-all cursor-pointer';
+        btnCards.className = 'p-2 rounded-xl text-slate-500 hover:text-slate-900 transition-all cursor-pointer';
+        matrixView.classList.remove('hidden');
+        cardsView.classList.add('hidden');
+      }
+      filterData();
+    }
+
+    function filterData() {
+      const q = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+      const filtered = allStudents.filter(s => {
+        const matchFilter = (currentFilter === 'all') || (s.status === currentFilter);
+        if (!matchFilter) return false;
+        if (!q) return true;
+
+        const no = String(s.no || '').toLowerCase();
+        const id = String(s.id || '').toLowerCase();
+        const name = String(s.name || '').toLowerCase();
+        const nickname = String(s.nickname || '').toLowerCase();
+        const sender = String(s.sender || '').toLowerCase();
+        return no.includes(q) || id.includes(q) || name.includes(q) || nickname.includes(q) || sender.includes(q);
+      });
+
+      renderCards(filtered);
+      renderMatrix(filtered);
+      document.getElementById('footerCount').innerText = 'แสดง ' + filtered.length + ' จาก ' + allStudents.length + ' คน';
+    }
+
+    function renderCards(list) {
+      const tbody = document.getElementById('cardsTableBody');
+      if (!list.length) {
+        tbody.innerHTML = '<tr><td colspan="7" class="py-12 text-center text-slate-400">ไม่พบข้อมูลที่ตรงกับเงื่อนไขการค้นหา</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = list.map(s => {
+        let badgeClass = 'bg-rose-100/90 text-rose-800 border border-rose-300';
+        if (s.status === 'จ่ายครบ') badgeClass = 'bg-emerald-100/90 text-emerald-800 border border-emerald-300';
+        else if (s.status === 'จ่ายบางส่วน') badgeClass = 'bg-amber-100/90 text-amber-900 border border-amber-300';
+
+        const nickBadge = s.nickname ? '<span class="px-1.5 py-0.5 rounded text-[11px] bg-slate-100 text-slate-600 border border-slate-200 font-normal ml-1.5">' + s.nickname + '</span>' : '';
+
+        let subjectsHtml = '';
+        if (s.allocations && s.allocations.length > 0) {
+          subjectsHtml = '<div class="flex flex-wrap items-center gap-1 mt-1.5">' +
+            s.allocations.map(a => {
+              if (a.status === 'paid') {
+                return '<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-emerald-100 text-emerald-800 border border-emerald-200">' +
+                  '<svg class="w-2.5 h-2.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>' +
+                  a.name + '</span>';
+              } else if (a.status === 'partial') {
+                return '<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300">' +
+                  '<svg class="w-2.5 h-2.5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3"/></svg>' +
+                  a.name + ' (ขาด ' + a.owed + '฿)</span>';
+              } else {
+                return '<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-rose-50 text-rose-700 border border-rose-200/80">' +
+                  '<svg class="w-2.5 h-2.5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01"/></svg>' +
+                  a.name + ' (' + a.owed + '฿)</span>';
+              }
+            }).join('') +
+          '</div>';
+        }
+
+        const slipBtn = s.slip ? 
+          '<a href="' + s.slip + '" target="_blank" class="liquid-btn-glass inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-semibold text-blue-700 cursor-pointer">' +
+          '<svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>ดูสลิป</a>'
+          : '<span class="text-slate-400 text-xs">-</span>';
+
+        const rowUploadBtn = 
+          '<button onclick="openUploadModalForStudent(' + s.row + ')" class="liquid-btn-dark inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-semibold cursor-pointer">' +
+          '<svg class="w-3 h-3 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>ส่งสลิป</button>';
+
+        const senderHtml = s.sender ? '<div class="text-[11px] text-slate-500 mt-1 truncate max-w-[150px] mx-auto" title="' + s.sender + '">โอนโดย: ' + s.sender + '</div>' : '';
+
+        return '<tr class="hover:bg-white/60 transition-colors">' +
+          '<td class="py-3.5 px-3 text-center font-bold text-slate-500">' + s.no + '</td>' +
+          '<td class="py-3.5 px-3 font-mono text-xs text-slate-600">' + s.id + '</td>' +
+          '<td class="py-3.5 px-4"><div class="font-semibold text-slate-900 flex items-center">' + s.name + nickBadge + '</div></td>' +
+          '<td class="py-3.5 px-3 text-right font-bold text-slate-900">' + Number(s.paid || 0).toLocaleString() + ' ฿</td>' +
+          '<td class="py-3.5 px-3 text-right font-bold ' + (s.owed > 0 ? 'text-rose-600' : 'text-emerald-600') + '">' + Number(s.owed || 0).toLocaleString() + ' ฿</td>' +
+          '<td class="py-3.5 px-4">' +
+            '<div class="flex items-center gap-2">' +
+              '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold ' + badgeClass + '">' + s.status + '</span>' +
+              (s.status === 'จ่ายบางส่วน' && s.lastPaidName ? '<span class="text-[11px] font-semibold text-slate-600">จ่ายครบถึง: <span class="text-slate-900 underline font-bold">' + s.lastPaidName + '</span></span>' : '') +
+            '</div>' +
+            subjectsHtml +
+          '</td>' +
+          '<td class="py-3.5 px-3 text-center"><div class="flex items-center justify-center gap-1.5">' + slipBtn + rowUploadBtn + '</div>' + senderHtml + '</td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    function renderMatrixHeaders() {
+      const headerRow = document.getElementById('matrixHeaderRow');
+      let ths = '<th class="py-3 px-3 w-12 text-center">เลขที่</th>' +
+        '<th class="py-3 px-4 w-44">ชื่อ - นามสกุล</th>';
+
+      classroomSubjects.forEach(sub => {
+        ths += '<th class="py-3 px-2 text-center text-slate-600 font-semibold">' +
+          sub.name + '<div class="text-[10px] text-slate-400 font-normal">' + sub.price + '฿</div></th>';
+      });
+
+      ths += '<th class="py-3 px-3 text-right w-24 bg-white/40 font-bold">ยอดโอน</th>' +
+        '<th class="py-3 px-3 text-right w-24 bg-white/40 font-bold">ค้างชำระ</th>';
+
+      headerRow.innerHTML = ths;
+    }
+
+    function renderMatrix(list) {
+      const tbody = document.getElementById('matrixTableBody');
+      if (!list.length) {
+        tbody.innerHTML = '<tr><td colspan="12" class="py-12 text-center text-slate-400">ไม่พบข้อมูลที่ตรงกับเงื่อนไขการค้นหา</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = list.map(s => {
+        let cells = '<td class="py-2.5 px-3 text-center font-bold text-slate-500">' + s.no + '</td>' +
+          '<td class="py-2.5 px-4 font-semibold text-slate-800 truncate max-w-[160px]">' + s.name + '</td>';
+
+        const allocMap = {};
+        if (s.allocations) {
+          s.allocations.forEach(a => { allocMap[a.name] = a; });
+        }
+
+        classroomSubjects.forEach(sub => {
+          const a = allocMap[sub.name];
+          if (!a || a.status === 'unpaid') {
+            cells += '<td class="py-2 px-2 text-center text-slate-400 text-[11px]">-</td>';
+          } else if (a.status === 'paid') {
+            cells += '<td class="py-2 px-2 text-center"><span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">✓ ' + a.paid + '฿</span></td>';
+          } else {
+            cells += '<td class="py-2 px-2 text-center"><span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900">⏱ ' + a.paid + '/' + sub.price + '฿</span></td>';
+          }
+        });
+
+        cells += '<td class="py-2.5 px-3 text-right font-bold text-slate-900 bg-white/40">' + Number(s.paid || 0).toLocaleString() + ' ฿</td>' +
+          '<td class="py-2.5 px-3 text-right font-bold ' + (s.owed > 0 ? 'text-rose-600' : 'text-emerald-600') + ' bg-white/40">' + Number(s.owed || 0).toLocaleString() + ' ฿</td>';
+
+        return '<tr class="hover:bg-white/60 transition-colors">' + cells + '</tr>';
+      }).join('');
+    }
+
+    // ===== UPLOAD MODAL LOGIC =====
+    function populateModalStudentDropdown() {
+      const select = document.getElementById('modalStudentSelect');
+      let html = '<option value="">-- กรุณาเลือกนักเรียน --</option>';
+      allStudents.forEach(s => {
+        html += '<option value="' + s.row + '">' + s.no + '. ' + s.name + (s.nickname ? ' (' + s.nickname + ')' : '') + '</option>';
+      });
+      select.innerHTML = html;
+    }
+
+    function openUploadModalForStudent(row) {
+      document.getElementById('uploadModal').classList.remove('hidden');
+      resetUploadModal();
+      document.getElementById('modalStudentSelect').value = row;
+    }
+
+    function closeUploadModal() {
+      document.getElementById('uploadModal').classList.add('hidden');
+      resetUploadModal();
+    }
+
+    function resetUploadModal() {
+      currentBase64 = '';
+      currentMimeType = '';
+      currentFileName = '';
+      document.getElementById('slipFileInput').value = '';
+      document.getElementById('dropzoneContent').classList.remove('hidden');
+      document.getElementById('previewContainer').classList.add('hidden');
+      document.getElementById('scanStatus').classList.add('hidden');
+      document.getElementById('extractedSection').classList.add('hidden');
+      document.getElementById('inputAmount').value = '';
+      document.getElementById('inputSender').value = '';
+      document.getElementById('inputDatetime').value = '';
+      document.getElementById('inputRef').value = '';
+      document.getElementById('btnSaveSlip').disabled = true;
+    }
+
+    function handleFileSelect(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      if (!['image/jpeg', 'image/png'].includes(file.type)) {
+        alert('กรุณาเลือกไฟล์สลิปเป็นรูปภาพ .jpg หรือ .png');
+        return;
+      }
+
+      currentFileName = file.name;
+      currentMimeType = file.type;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const fullDataUrl = evt.target.result;
+        currentBase64 = fullDataUrl.split(',')[1];
+
+        document.getElementById('imagePreview').src = fullDataUrl;
+        document.getElementById('dropzoneContent').classList.add('hidden');
+        document.getElementById('previewContainer').classList.remove('hidden');
+
+        scanSlipWithAI(currentBase64, currentMimeType);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function scanSlipWithAI(base64, mimeType) {
+      const statusDiv = document.getElementById('scanStatus');
+      const statusText = document.getElementById('scanStatusText');
+      statusDiv.classList.remove('hidden');
+      statusText.innerText = 'AI กำลังสแกนข้อมูลจากสลิป (ชื่อผู้โอน, ยอดเงิน, วันเวลา)...';
+
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run
+          .withSuccessHandler(function(data) {
+            statusDiv.classList.add('hidden');
+            if (!data) return;
+
+            document.getElementById('extractedSection').classList.remove('hidden');
+            document.getElementById('inputAmount').value = data.amount || '';
+            document.getElementById('inputSender').value = data.sender || '';
+            document.getElementById('inputDatetime').value = data.datetime || '';
+            document.getElementById('inputRef').value = data.ref || '';
+            document.getElementById('btnSaveSlip').disabled = false;
+
+            checkStudentNameMatch();
+            updateAllocationPreview();
+          })
+          .withFailureHandler(function(err) {
+            statusDiv.classList.remove('hidden');
+            statusDiv.className = 'p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-800 flex items-center gap-2 mb-4';
+            statusText.innerText = 'การอ่านสลิปแจ้งเตือน: ' + (err.message || err) + ' (สามารถกรอกยอดเงินด้วยตนเองได้)';
+            document.getElementById('extractedSection').classList.remove('hidden');
+            document.getElementById('btnSaveSlip').disabled = false;
+          })
+          .readSlip(base64, mimeType);
+      }
+    }
+
+    function checkStudentNameMatch() {
+      const selectedRow = Number(document.getElementById('modalStudentSelect').value);
+      const student = allStudents.find(s => s.row === selectedRow);
+      const sender = document.getElementById('inputSender').value;
+      const badge = document.getElementById('nameMatchBadge');
+
+      if (!student || !sender) {
+        badge.innerText = '';
+        return;
+      }
+
+      const cleanName = (student.name || '').replace(/^(นาย|นางสาว|นาง|ด\.ช\.|ด\.ญ\.)\s*/, '').split(' ')[0].trim();
+      const cleanSender = sender.replace(/^(นาย|นางสาว|นาง|ด\.ช\.|ด\.ญ\.|mr\.|ms\.)\s*/i, '').split(' ')[0].trim();
+
+      if (cleanSender && cleanName && (cleanSender.includes(cleanName) || cleanName.includes(cleanSender))) {
+        badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800';
+        badge.innerText = '✓ ชื่อตรงกับนักเรียน';
+      } else {
+        badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800';
+        badge.innerText = '⚠ โอนโดยผู้ปกครอง / ชื่อต่าง';
+      }
+    }
+
+    function onModalStudentChange() {
+      checkStudentNameMatch();
+      updateAllocationPreview();
+    }
+
+    function updateAllocationPreview() {
+      const selectedRow = Number(document.getElementById('modalStudentSelect').value);
+      const student = allStudents.find(s => s.row === selectedRow);
+      const amount = Number(document.getElementById('inputAmount').value) || 0;
+      const textElem = document.getElementById('modalAllocText');
+
+      if (!student) {
+        textElem.innerText = 'กรุณาเลือกนักเรียนเพื่อดูผลการตัดวิชา';
+        return;
+      }
+
+      const totalPaid = (Number(student.paid) || 0) + amount;
+      let remaining = totalPaid;
+      const paidSubjects = [];
+      let partialSubject = null;
+
+      classroomSubjects.forEach(sub => {
+        if (remaining >= sub.price) {
+          remaining -= sub.price;
+          paidSubjects.push(sub.name);
+        } else if (remaining > 0 && !partialSubject) {
+          partialSubject = sub.name + ' (' + remaining + '/' + sub.price + '฿)';
+          remaining = 0;
+        }
+      });
+
+      let summary = '';
+      if (paidSubjects.length > 0) {
+        summary = 'จ่ายถึง: ' + paidSubjects.join(', ');
+        if (partialSubject) summary += ' + ' + partialSubject;
+      } else if (partialSubject) {
+        summary = 'จ่ายบางส่วนเข้า ' + partialSubject;
+      } else {
+        summary = 'ยังไม่มียอดชำระ';
+      }
+
+      textElem.innerText = summary + ' (รวม ' + totalPaid.toLocaleString() + '/' + totalPerStudent.toLocaleString() + ' ฿)';
+    }
+
+    function submitSlip() {
+      const row = Number(document.getElementById('modalStudentSelect').value);
+      if (!row) {
+        alert('กรุณาเลือกนักเรียนก่อนบันทึก');
+        return;
+      }
+
+      const amount = Number(document.getElementById('inputAmount').value);
+      if (!(amount > 0)) {
+        alert('กรุณาระบุยอดเงินที่ถูกต้อง');
+        return;
+      }
+
+      const btn = document.getElementById('btnSaveSlip');
+      btn.disabled = true;
+      btn.innerText = 'กำลังบันทึกลง Google Sheets และ Drive...';
+
+      const slipData = {
+        amount: amount,
+        sender: document.getElementById('inputSender').value,
+        datetime: document.getElementById('inputDatetime').value,
+        ref: document.getElementById('inputRef').value
+      };
+
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run
+          .withSuccessHandler(function() {
+            alert('บันทึกสลิปและปรับปรุงสถานะสำเร็จเรียบร้อยแล้ว!');
+            closeUploadModal();
+            refreshData();
+          })
+          .withFailureHandler(function(err) {
+            alert('เกิดข้อผิดพลาดในการบันทึก: ' + (err.message || err));
+            btn.disabled = false;
+            btn.innerText = 'บันทึกสลิปและข้อมูล';
+          })
+          .saveSlip(row, slipData, currentBase64, currentFileName, currentMimeType);
+      }
+    }
+  </script>
+</body>
+</html>
